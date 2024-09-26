@@ -3,13 +3,13 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
 
 const FeedbackForm = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, control } = useForm();
 
   const onSubmit = (data) => {
     // Simulate sending email
@@ -98,22 +98,32 @@ const FeedbackForm = () => {
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Future Engagement</h2>
         <div>
           <Label htmlFor="recommendation">Likelihood of Recommending</Label>
-          <Select id="recommendation" {...register('recommendation')}>
-            <option value="very-likely">Very Likely</option>
-            <option value="likely">Likely</option>
-            <option value="neutral">Neutral</option>
-            <option value="unlikely">Unlikely</option>
-            <option value="very-unlikely">Very Unlikely</option>
+          <Select onValueChange={(value) => control.setValue('recommendation', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select likelihood" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="very-likely">Very Likely</SelectItem>
+              <SelectItem value="likely">Likely</SelectItem>
+              <SelectItem value="neutral">Neutral</SelectItem>
+              <SelectItem value="unlikely">Unlikely</SelectItem>
+              <SelectItem value="very-unlikely">Very Unlikely</SelectItem>
+            </SelectContent>
           </Select>
         </div>
         <div>
           <Label htmlFor="futureProjects">Future Projects</Label>
-          <Select id="futureProjects" {...register('futureProjects')}>
-            <option value="definitely">Definitely</option>
-            <option value="probably">Probably</option>
-            <option value="might">Might</option>
-            <option value="probably-not">Probably Not</option>
-            <option value="definitely-not">Definitely Not</option>
+          <Select onValueChange={(value) => control.setValue('futureProjects', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select likelihood" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="definitely">Definitely</SelectItem>
+              <SelectItem value="probably">Probably</SelectItem>
+              <SelectItem value="might">Might</SelectItem>
+              <SelectItem value="probably-not">Probably Not</SelectItem>
+              <SelectItem value="definitely-not">Definitely Not</SelectItem>
+            </SelectContent>
           </Select>
         </div>
       </div>
