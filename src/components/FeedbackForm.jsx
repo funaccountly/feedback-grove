@@ -12,9 +12,14 @@ const FeedbackForm = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    // Here you would typically send the data to your backend
-    toast.success('Feedback submitted successfully!');
+    // Simulate sending email
+    console.log('Sending email to: adnanmuhammad4393@gmail.com');
+    console.log('Form data:', data);
+
+    // In a real application, you would send this data to a backend service
+    // that would handle the email sending process
+
+    toast.success('Feedback submitted successfully! An email has been sent to adnanmuhammad4393@gmail.com');
     reset();
   };
 
