@@ -6,13 +6,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { toast } from 'sonner';
 
 const FeedbackForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
     // Here you would typically send the data to your backend
+    toast.success('Feedback submitted successfully!');
+    reset();
   };
 
   return (
@@ -21,23 +24,23 @@ const FeedbackForm = () => {
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Basic Information</h2>
         <div>
           <Label htmlFor="clientName">Client Name</Label>
-          <Input id="clientName" {...register('clientName', { required: true })} className="mt-1" />
-          {errors.clientName && <span className="text-red-500 text-sm">This field is required</span>}
+          <Input id="clientName" {...register('clientName', { required: 'Client name is required' })} className="mt-1" />
+          {errors.clientName && <span className="text-red-500 text-sm">{errors.clientName.message}</span>}
         </div>
         <div>
           <Label htmlFor="company">Company/Organization</Label>
-          <Input id="company" {...register('company', { required: true })} className="mt-1" />
-          {errors.company && <span className="text-red-500 text-sm">This field is required</span>}
+          <Input id="company" {...register('company', { required: 'Company is required' })} className="mt-1" />
+          {errors.company && <span className="text-red-500 text-sm">{errors.company.message}</span>}
         </div>
         <div>
           <Label htmlFor="projectName">Project Name/ID</Label>
-          <Input id="projectName" {...register('projectName', { required: true })} className="mt-1" />
-          {errors.projectName && <span className="text-red-500 text-sm">This field is required</span>}
+          <Input id="projectName" {...register('projectName', { required: 'Project name is required' })} className="mt-1" />
+          {errors.projectName && <span className="text-red-500 text-sm">{errors.projectName.message}</span>}
         </div>
         <div>
           <Label htmlFor="completionDate">Date of Completion</Label>
-          <Input id="completionDate" type="date" {...register('completionDate', { required: true })} className="mt-1" />
-          {errors.completionDate && <span className="text-red-500 text-sm">This field is required</span>}
+          <Input id="completionDate" type="date" {...register('completionDate', { required: 'Completion date is required' })} className="mt-1" />
+          {errors.completionDate && <span className="text-red-500 text-sm">{errors.completionDate.message}</span>}
         </div>
       </div>
 
@@ -47,28 +50,27 @@ const FeedbackForm = () => {
           <Label>Overall Satisfaction</Label>
           <RadioGroup defaultValue="satisfied">
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="very-satisfied" id="very-satisfied" />
+              <RadioGroupItem value="very-satisfied" id="very-satisfied" {...register('overallSatisfaction')} />
               <Label htmlFor="very-satisfied">Very Satisfied</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="satisfied" id="satisfied" />
+              <RadioGroupItem value="satisfied" id="satisfied" {...register('overallSatisfaction')} />
               <Label htmlFor="satisfied">Satisfied</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="neutral" id="neutral" />
+              <RadioGroupItem value="neutral" id="neutral" {...register('overallSatisfaction')} />
               <Label htmlFor="neutral">Neutral</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="dissatisfied" id="dissatisfied" />
+              <RadioGroupItem value="dissatisfied" id="dissatisfied" {...register('overallSatisfaction')} />
               <Label htmlFor="dissatisfied">Dissatisfied</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="very-dissatisfied" id="very-dissatisfied" />
+              <RadioGroupItem value="very-dissatisfied" id="very-dissatisfied" {...register('overallSatisfaction')} />
               <Label htmlFor="very-dissatisfied">Very Dissatisfied</Label>
             </div>
           </RadioGroup>
         </div>
-        {/* Add similar RadioGroup components for other evaluation criteria */}
       </div>
 
       <div className="space-y-4">
