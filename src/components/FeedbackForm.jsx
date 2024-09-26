@@ -7,20 +7,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
+import { sendEmail } from '../utils/api';
 
 const FeedbackForm = () => {
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm();
 
-  const onSubmit = (data) => {
-    // Simulate sending email
-    console.log('Sending email to: adnanmuhammad4393@gmail.com');
-    console.log('Form data:', data);
-
-    // In a real application, you would send this data to a backend service
-    // that would handle the email sending process
-
-    toast.success('Feedback submitted successfully! An email has been sent to adnanmuhammad4393@gmail.com');
-    reset();
+  const onSubmit = async (data) => {
+    try {
+      const response = await sendEmail(data);
+      if (response.success) {
+        toast.success('Feedback submitted successfully! An email has been sent to adnanmuhammad4393@gmail.com');
+        reset();
+      } else {
+        toast.error('Failed to send feedback. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending feedback:', error);
+      toast.error('An error occurred while sending feedback. Please try again.');
+    }
   };
 
   return (
@@ -136,6 +140,8 @@ const FeedbackForm = () => {
       <Button type="submit" className="w-full">Submit Feedback</Button>
     </form>
   );
+};
+
 };
 
 export default FeedbackForm;
