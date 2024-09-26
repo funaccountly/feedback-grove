@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,13 +10,12 @@ import { toast } from 'sonner';
 import { createMailtoLink } from '../utils/emailUtils';
 
 const FeedbackForm = () => {
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm();
+  const { register, handleSubmit, control, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
     const mailtoLink = createMailtoLink(data);
     window.location.href = mailtoLink;
     toast.success('Email client opened with feedback data. Please send the email to complete the process.');
-    reset();
   };
 
   return (
@@ -49,28 +48,36 @@ const FeedbackForm = () => {
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Service Evaluation</h2>
         <div>
           <Label>Overall Satisfaction</Label>
-          <RadioGroup defaultValue="satisfied">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="very-satisfied" id="very-satisfied" {...register('overallSatisfaction')} />
-              <Label htmlFor="very-satisfied">Very Satisfied</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="satisfied" id="satisfied" {...register('overallSatisfaction')} />
-              <Label htmlFor="satisfied">Satisfied</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="neutral" id="neutral" {...register('overallSatisfaction')} />
-              <Label htmlFor="neutral">Neutral</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="dissatisfied" id="dissatisfied" {...register('overallSatisfaction')} />
-              <Label htmlFor="dissatisfied">Dissatisfied</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="very-dissatisfied" id="very-dissatisfied" {...register('overallSatisfaction')} />
-              <Label htmlFor="very-dissatisfied">Very Dissatisfied</Label>
-            </div>
-          </RadioGroup>
+          <Controller
+            name="overallSatisfaction"
+            control={control}
+            rules={{ required: 'Please select your overall satisfaction' }}
+            render={({ field }) => (
+              <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="very-satisfied" id="very-satisfied" />
+                  <Label htmlFor="very-satisfied">Very Satisfied</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="satisfied" id="satisfied" />
+                  <Label htmlFor="satisfied">Satisfied</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="neutral" id="neutral" />
+                  <Label htmlFor="neutral">Neutral</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="dissatisfied" id="dissatisfied" />
+                  <Label htmlFor="dissatisfied">Dissatisfied</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="very-dissatisfied" id="very-dissatisfied" />
+                  <Label htmlFor="very-dissatisfied">Very Dissatisfied</Label>
+                </div>
+              </RadioGroup>
+            )}
+          />
+          {errors.overallSatisfaction && <span className="text-red-500 text-sm">{errors.overallSatisfaction.message}</span>}
         </div>
       </div>
 
@@ -94,33 +101,49 @@ const FeedbackForm = () => {
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Future Engagement</h2>
         <div>
           <Label htmlFor="recommendation">Likelihood of Recommending</Label>
-          <Select onValueChange={(value) => control.setValue('recommendation', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select likelihood" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="very-likely">Very Likely</SelectItem>
-              <SelectItem value="likely">Likely</SelectItem>
-              <SelectItem value="neutral">Neutral</SelectItem>
-              <SelectItem value="unlikely">Unlikely</SelectItem>
-              <SelectItem value="very-unlikely">Very Unlikely</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="recommendation"
+            control={control}
+            rules={{ required: 'Please select your recommendation likelihood' }}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select likelihood" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="very-likely">Very Likely</SelectItem>
+                  <SelectItem value="likely">Likely</SelectItem>
+                  <SelectItem value="neutral">Neutral</SelectItem>
+                  <SelectItem value="unlikely">Unlikely</SelectItem>
+                  <SelectItem value="very-unlikely">Very Unlikely</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.recommendation && <span className="text-red-500 text-sm">{errors.recommendation.message}</span>}
         </div>
         <div>
           <Label htmlFor="futureProjects">Future Projects</Label>
-          <Select onValueChange={(value) => control.setValue('futureProjects', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select likelihood" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="definitely">Definitely</SelectItem>
-              <SelectItem value="probably">Probably</SelectItem>
-              <SelectItem value="might">Might</SelectItem>
-              <SelectItem value="probably-not">Probably Not</SelectItem>
-              <SelectItem value="definitely-not">Definitely Not</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="futureProjects"
+            control={control}
+            rules={{ required: 'Please select your likelihood for future projects' }}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select likelihood" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="definitely">Definitely</SelectItem>
+                  <SelectItem value="probably">Probably</SelectItem>
+                  <SelectItem value="might">Might</SelectItem>
+                  <SelectItem value="probably-not">Probably Not</SelectItem>
+                  <SelectItem value="definitely-not">Definitely Not</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.futureProjects && <span className="text-red-500 text-sm">{errors.futureProjects.message}</span>}
         </div>
       </div>
 
