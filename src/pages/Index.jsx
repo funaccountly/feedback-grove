@@ -1,13 +1,21 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import { ThemeProvider } from 'next-themes';
+import FeedbackForm from '../components/FeedbackForm';
+import ThemeToggle from '../components/ThemeToggle';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <ThemeProvider attribute="class">
+      <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-white">Client Feedback Form</h1>
+            <ThemeToggle />
+          </div>
+          <FeedbackForm />
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
